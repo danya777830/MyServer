@@ -6,7 +6,7 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#define MAXDATASIZE 100
+#define MAXDATASIZE 10
 #define BACKLOG 10
 
 namespace Net {

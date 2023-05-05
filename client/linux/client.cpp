@@ -55,7 +55,7 @@ std::string Net::Client::get() {
 
 void Net::Client::my_send() {
     printf("sending...\n");
-    if (send(socket_, "Hellow world!", 13, 0) == -1) {
+    if (send(socket_, "Hellow world!" + '\0', 14, 0) == -1) {
         perror("send");
     }
     printf("sending: accept\n");
@@ -72,6 +72,10 @@ std::string Net::Client::receive() {
         }
         for (int i = 0; i < bytes_cnt && i < MAXDATASIZE; ++i) {
             it += buffer_[i];
+            if(buffer_[i] == '\0') {
+                bytes_cnt = 0;
+                break;
+            }
         }
     }
     printf("receiving: accept\n");

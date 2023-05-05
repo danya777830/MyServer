@@ -94,23 +94,30 @@ void Net::Server::receive() {
 
     printf("server connected\n");
 
-    int bytes_cnt;
-    if ((bytes_cnt = recv(client_socket_, &buffer_, MAXDATASIZE - 1, 0)) == -1) {
-        printf("recv: err\n");
-        exit(1);
+    int bytes_cnt = -1;
+    str = "";
+    while(bytes_cnt != 0) {
+        if ((bytes_cnt = recv(client_socket_, &buffer_, MAXDATASIZE, 0)) == -1) {
+            printf("recv: err\n");
+            exit(1);
+        }
+
+        for (int i = 0; i < bytes_cnt; ++i) {
+            if(buffer_[i] == '\0') {
+                bytes_cnt = 0;
+                break;
+            }
+            str += buffer_[i];
+        }
     }
 
-    buffer_[bytes_cnt] = '\0';
-
-    str = std::string(buffer_);
-
-    printf("server get data: %s\n", buffer_);
+    printf("server get data: %s\n", str.c_str());
 }
 
 void Net::Server::proccess() {
     str += "myaaay";
 
-    printf("proccess end: done\n");
+    printf("proccess end: done\n\0");
 }
 
 void Net::Server::my_send() {
